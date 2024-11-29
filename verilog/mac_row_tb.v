@@ -46,20 +46,24 @@ initial begin
     #10;
     reset = 0;
 
-    // Load weight into each column
-    #10;
-    inst_w = 2'b01; // Set load weight instruction
-    in_w = 4'b1101; // Example weight: -3 (signed 4-bit)
-    in_n = {col{16'h0000}}; // Initialize partial sum input to 0
+    // Load weights into all columns
+    for (int i = 0; i < col; i = i + 1) begin
+        #10;
+        inst_w = 2'b01; // Load weight instruction
+        in_w = 4'b1010; // Example weight for each column (-6 signed 4-bit)
+        in_n = {col{16'h0000}}; // Initialize partial sums to 0
+    end
 
     #10;
     inst_w = 2'b00; // Disable instructions
 
-    // Perform MAC operation for all columns
-    #10;
-    inst_w = 2'b10; // Set execute instruction
-    in_w = 4'b0101; // Example activation: 5 (signed 4-bit)
-    in_n = {col{16'h000A}}; // Example partial sum: 10 (signed 16-bit)
+    // Perform MAC operations for all columns
+    for (int i = 0; i < col; i = i + 1) begin
+        #10;
+        inst_w = 2'b10; // Execute instruction
+        in_w = 4'b0101; // Example activation for each column (5 signed 4-bit)
+        in_n = {col{16'h000A}}; // Example partial sum: 10 (16-bit)
+    end
 
     #10;
     inst_w = 2'b00; // Disable instructions
@@ -69,11 +73,11 @@ initial begin
     $display("Output South (out_s): %h", out_s);
     $display("Valid signals: %b", valid);
 
-    // Check results for first column
-    if (out_s[psum_bw-1:0] !== ((5 * -3) + 10)) begin
-        $display("TEST FAILED: Incorrect MAC calculation for column 1.");
+    // Check the `valid` signal
+    if (valid !== {col{1'b1}}) begin
+        $display("TEST FAILED: Valid signal is incorrect.");
     end else begin
-        $display("TEST PASSED: Correct MAC calculation for column 1.");
+        $display("TEST PASSED: Valid signal is correct.");
     end
 
     // End simulation

@@ -1,4 +1,3 @@
-
 `timescale 1ns / 1ps
 
 module mac_row_tb;
@@ -46,24 +45,44 @@ initial begin
     #10;
     reset = 0;
 
-    // Load weights into all columns
-    for (int i = 0; i < col; i = i + 1) begin
-        #10;
-        inst_w = 2'b01; // Load weight instruction
-        in_w = 4'b1010; // Example weight for each column (-6 signed 4-bit)
-        in_n = {col{16'h0000}}; // Initialize partial sums to 0
-    end
+    // Manually load weights for each column
+    #10;
+    inst_w = 2'b01; in_w = 4'b1010; in_n = {col{16'h0000}}; // Load weight for column 1
+    #10;
+    inst_w = 2'b01; in_w = 4'b1010; in_n = {col{16'h0000}}; // Load weight for column 2
+    #10;
+    inst_w = 2'b01; in_w = 4'b1010; in_n = {col{16'h0000}}; // Load weight for column 3
+    #10;
+    inst_w = 2'b01; in_w = 4'b1010; in_n = {col{16'h0000}}; // Load weight for column 4
+    #10;
+    inst_w = 2'b01; in_w = 4'b1010; in_n = {col{16'h0000}}; // Load weight for column 5
+    #10;
+    inst_w = 2'b01; in_w = 4'b1010; in_n = {col{16'h0000}}; // Load weight for column 6
+    #10;
+    inst_w = 2'b01; in_w = 4'b1010; in_n = {col{16'h0000}}; // Load weight for column 7
+    #10;
+    inst_w = 2'b01; in_w = 4'b1010; in_n = {col{16'h0000}}; // Load weight for column 8
 
     #10;
     inst_w = 2'b00; // Disable instructions
 
-    // Perform MAC operations for all columns
-    for (int i = 0; i < col; i = i + 1) begin
-        #10;
-        inst_w = 2'b10; // Execute instruction
-        in_w = 4'b0101; // Example activation for each column (5 signed 4-bit)
-        in_n = {col{16'h000A}}; // Example partial sum: 10 (16-bit)
-    end
+    // Manually execute MAC operations for each column
+    #10;
+    inst_w = 2'b10; in_w = 4'b0101; in_n = {col{16'h000A}}; // MAC operation for column 1
+    #10;
+    inst_w = 2'b10; in_w = 4'b0101; in_n = {col{16'h000A}}; // MAC operation for column 2
+    #10;
+    inst_w = 2'b10; in_w = 4'b0101; in_n = {col{16'h000A}}; // MAC operation for column 3
+    #10;
+    inst_w = 2'b10; in_w = 4'b0101; in_n = {col{16'h000A}}; // MAC operation for column 4
+    #10;
+    inst_w = 2'b10; in_w = 4'b0101; in_n = {col{16'h000A}}; // MAC operation for column 5
+    #10;
+    inst_w = 2'b10; in_w = 4'b0101; in_n = {col{16'h000A}}; // MAC operation for column 6
+    #10;
+    inst_w = 2'b10; in_w = 4'b0101; in_n = {col{16'h000A}}; // MAC operation for column 7
+    #10;
+    inst_w = 2'b10; in_w = 4'b0101; in_n = {col{16'h000A}}; // MAC operation for column 8
 
     #10;
     inst_w = 2'b00; // Disable instructions
